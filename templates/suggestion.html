@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Suggestions</title>
+    <style>
+        /* Base Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('{{ url_for('static', filename='images/background.jpg') }}') no-repeat center center/cover;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100%;
+            width: 100%;
+            color: white;
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 40px;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #ffcc00;
+            margin-bottom: 30px;
+        }
+
+        .course-category {
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .added-courses-list {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 10px;
+        }
+
+        .added-courses-list::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .added-courses-list::-webkit-scrollbar-thumb {
+            background-color: #ffcc00;
+            border-radius: 4px;
+        }
+
+        .added-courses-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .course-card {
+            background-color: rgba(255, 255, 255, 0.2);
+            min-width: 250px;
+            flex-shrink: 0;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            color: white;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            background-color: #007BFF;
+        }
+
+        .course-card strong {
+            font-size: 18px;
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .course-card a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .course-card a:hover {
+            text-decoration: underline;
+        }
+
+        .add-to-dashboard {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #ffcc00;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-dashboard:hover {
+            background-color: #d4a700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Course Suggestions</h1>
+
+        {% for course_name, suggestions in suggestions.items() %}
+            <div class="course-category">
+                <div class="category-title">
+                    Similar courses to: {{ course_name }}
+                </div>
+                <div class="added-courses-list">
+                    {% for suggestion in suggestions %}
+                        <div class="course-card">
+                            <strong>{{ suggestion['Course Name'] }}</strong>
+                            <p>Rating: {{ suggestion['Course Rating'] }}</p>
+                            <a href="{{ suggestion['Course URL'] }}" target="_blank">View Course</a>
+                            
+                            <form action="{{ url_for('add_to_dashboard') }}" method="POST">
+                                <input type="hidden" name="course_name" value="{{ suggestion['Course Name'] }}">
+                                <input type="hidden" name="course_rating" value="{{ suggestion['Course Rating'] }}">
+                                <input type="hidden" name="course_url" value="{{ suggestion['Course URL'] }}">
+                                <button type="submit" class="add-to-dashboard">Add to Dashboard</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p>No suggestions available based on your added courses.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

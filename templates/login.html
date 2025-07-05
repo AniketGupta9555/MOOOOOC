@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USER LOGIN</title>
+   
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{{ url_for('static', filename='images/background.jpg') }}') no-repeat center center fixed;
+    background-size: cover; /* Ensures the image covers the entire background */
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: transparent;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #ffcc00;
+            align-items: center;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 2s ease-in-out; /* Smooth fade-in animation */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #ffcc00;
+            font-weight: bold; /* Labels already bold */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+ .password-container {
+            position: relative;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-weight: bold; /* Eye icon bold */
+        }
+
+        .eye-icon.open {
+            color: #007bff;
+        }
+
+        .eye-icon.closed {
+            color: #ccc;
+        }
+
+    </style>
+</head>
+<body>
+       
+
+    <div class="container">
+        <h1 align="center">USER LOGIN</h1>
+        <form action="{{ url_for('login') }}" method="POST">
+            <label for="user_id">User ID</label>
+            <input type="text" id="user_id" name="user_id" required>
+
+            <!-- Password Fields -->
+            <label for="password">Password:</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <span class="eye-icon closed" id="eye-icon-password" onclick="togglePasswordVisibility('password', 'eye-icon-password')">&#128065;</span>
+            </div>
+
+            <button type="submit">Login</button>
+
+            {% if login_error %}
+                <div class="error-message">{{ login_error }}</div>
+            {% endif %}
+        </form>
+
+        <div class="link">
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
+    </div>
+
+ <script>
+        function togglePasswordVisibility(fieldId, iconId) {
+            var passwordField = document.getElementById(fieldId);
+            var icon = document.getElementById(iconId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("closed");
+                icon.classList.add("open");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("open");
+                icon.classList.add("closed");
+            }
+        }
+    </script>
+</body>
+</html>

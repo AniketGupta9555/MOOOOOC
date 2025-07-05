@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOOC Course Recommendation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{{ url_for('static', filename='images/background.jpg') }}') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .hero {
+            background: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 2s ease-in-out; /* Smooth fade-in animation */
+        }
+
+        .hero p {
+            font-size: 22px;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideUp 2s ease-in-out; /* Smooth slide-up animation */
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            width: 100%;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .button {
+            background-color: transparent;
+            color: #ffcc00; /* Same color as the welcome text */
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            text-decoration: none;
+            border: 2px solid #ffcc00;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .button:hover {
+            transform: translateY(-5px) scale(1.05); /* 3D hover effect */
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+            background-color: transparent;
+            color: #ffcc00; /* Ensure text color remains the same */
+        }
+
+        .feature-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            background-color: #fff;
+            padding: 30px;
+            width: 250px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            color: #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .feature-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .feature-item:hover {
+            background-color: #007bff;
+            color: white;
+            transform: translateY(-10px) rotateY(10deg); /* 3D effect on hover */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Welcome to the MOOC Course Recommendation System</h1>
+        <p>Your journey to find the best courses starts here.</p>
+    </div>
+
+    <div class="container">
+        <div class="button-group">
+            <a href="{{ url_for('register') }}" class="button">Register New User</a>
+            <a href="{{ url_for('login') }}" class="button">User Login</a>
+        </div>
+    </div>
+
+    <div class="feature-section">
+        <div class="feature-item">
+            <h3>Personalized</h3>
+            <p>Receive recommendations based on your interests and skills.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Top-Rated Courses</h3>
+            <p>Access courses highly rated by learners like you.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Skills-Based Search</h3>
+            <p>Quickly find courses based on the skills you want to learn.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 MOOC Recommendation System</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+</body>
+</html>

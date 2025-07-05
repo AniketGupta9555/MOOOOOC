@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Recommendations - MOOC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Base Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{{ url_for('static', filename='images/background.jpg') }}') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        /* Container for the page */
+        .recommendation-container {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 40px;
+            margin-top: 20px;
+        }
+
+        /* Header Styling */
+        .recommendation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .recommendation-header h3 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .recommendation-header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Add image under the header text */
+        .recommendation-header img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.2); /* 3D border effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+         .recommendation-head img {
+            max-width: 100%;
+            height: 50%;
+            margin-top: 20px;
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.2); /* 3D border effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+         .recommendation-head img:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2), 0 0 25px rgba(0, 0, 0, 0.3); /* More pronounced 3D effect on hover */
+        }
+
+
+        .recommendation-header img:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2), 0 0 25px rgba(0, 0, 0, 0.3); /* More pronounced 3D effect on hover */
+        }
+
+        /* Form Styling */
+        .recommendation-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group select,
+        .form-group input {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="text"] {
+            font-size: 16px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3; /* Blue background on hover */
+            color: white; /* White text on hover */
+        }
+
+        /* Recommendations Section */
+        .recommendations-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .recommendation-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 280px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: #007BFF;  /* Blue background on hover */
+    color: white;  /* White text color on hover */
+}
+
+.recommendation-card:hover h3,
+.recommendation-card:hover p,
+.recommendation-card:hover .course-rating {
+    color: white;  /* Ensures the text also turns white on hover */
+}
+
+        .recommendation-card h3 {
+            font-size: 24px;
+            color: #007BFF;
+            margin: 0;
+        }
+
+        .recommendation-card p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .recommendation-card .course-rating {
+            font-size: 18px;
+            color: #28a745;
+            margin-top: 10px;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .recommendation-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .recommendation-header h3 {
+                font-size: 30px;
+            }
+
+            .recommendation-header p {
+                font-size: 16px;
+            }
+
+            .recommendation-form input,
+            .recommendation-form select {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .form-group label {
+                font-size: 16px;
+            }
+
+            .recommendation-card {
+                width: 220px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .recommendation-header h3 {
+                font-size: 24px;
+            }
+
+            .recommendation-form {
+                margin-bottom: 20px;
+            }
+
+            .recommendation-form input,
+            .recommendation-form select {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .recommendation-card {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            footer {
+                position: static;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recommendation-header h3 {
+                font-size: 20px;
+            }
+
+            .recommendation-header p {
+                font-size: 14px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .recommendation-form input,
+            .recommendation-form select {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .recommendation-card {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="recommendation-container">
+        <!-- Recommendation Header -->
+        <div class="recommendation-header">
+            <h3>Get Your Personalized Course</h3>
+            <p>Select your preferences to get personalized course suggestions.</p>
+            <!-- Image under the header text -->
+            <img src="{{ url_for('static', filename='images/banner-img.png') }}" alt="Banner Image">
+        </div>
+
+        <!-- Recommendation Form -->
+        <form class="recommendation-form" action="{{ url_for('get_recommendation') }}" method="POST">
+            <div class="form-group">
+                <label for="topic">Topic of Interest</label>
+                <input type="text" id="topic" name="topic" placeholder="Enter your topic of interest" required>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">Preferred Difficulty Level</label>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rating">Minimum Course Rating</label>
+                <input type="number" id="min_rating" name="min_rating" step="0.1" min="0" max="5" placeholder="Enter a rating (e.g., 4.5)" required>           
+          </div>
+            <div class="form-group">
+                <input type="submit" value="Get Recommendations">
+            </div>
+        </form>
+
+        <!-- Recommendations Section -->
+        <div class="recommendations-list">
+            <!-- Example Course Cards (You will dynamically render these using Flask) -->
+            <div class="recommendation-card">
+                <h3>Introduction to Python</h3>
+                <p>Learn the basics of Python programming with hands-on exercises and projects.</p>
+                <div class="course-rating">Rating: 4.5/5</div>
+            </div>
+            <div class="recommendation-card">
+                <h3>Advanced JavaScript</h3>
+                <p>Deep dive into JavaScript and learn advanced concepts like closures and asynchronous programming.</p>
+                <div class="course-rating">Rating: 4.8/5</div>
+            </div>
+        </div>
+         <div class="recommendation-head">
+            <!-- Image under the header text -->
+            <img src="{{ url_for('static', filename='images/integrant-23-java-recomendation-engine-blog-06.jpg') }}" alt="Banner Image">
+        </div>
+
+    </div>
+     
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MOOC Platform. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+</body>
+</html>

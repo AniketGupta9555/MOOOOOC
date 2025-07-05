@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Courses</title>
+    <style>
+        /* Inline styling for demonstration purposes */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{{ url_for('static', filename='images/background.jpg') }}') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .heading h1 {
+            font-size: 50px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 2s ease-in-out; /* Smooth fade-in animation */
+        }
+
+        .heading p {
+            font-size: 18px;
+            color: #FFFFFF;
+        }
+
+        .course-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .course-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            width: 30%;
+            text-align: center;
+            vertical-align: top;
+            box-sizing: border-box;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-card h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .course-card .rating {
+            font-size: 18px;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .course-card a {
+            display: inline-block;
+            background-color: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+       /* Hover effect for course cards */
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background-color: #007BFF; /* Blue background on hover */
+    color: white; /* White text on hover */
+}
+
+/* Ensure text elements inside the card also change color */
+.course-card:hover h3,
+.course-card:hover p,
+.course-card:hover .rating {
+    color: white; /* White text for course title, description, and rating */
+}
+
+.course-card a:hover {
+    background-color: #005bb5; /* Darker blue on hover for the link */
+}
+
+.course-card button:hover {
+    background-color: #218838; /* Green button hover effect */
+}
+
+        .course-card button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .course-card button:hover {
+            background-color: #218838;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .flash.success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .flash.error {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .flash.info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .course-card {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .course-card {
+                width: 100%;
+            }
+        }
+
+        /* Smooth transition for card hover */
+        .course-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="heading">
+            <h1>Top Recommended Courses</h1>
+            <p>Choose the best course based on your interests and preferences.</p>
+        </div>
+
+      
+        <div class="course-cards">
+            {% if recommendations and recommendations|length > 0 %}
+                {% for course in recommendations %}
+                    <div class="course-card">
+                        <h3>{{ course.get('Course Name', 'Unknown Course') }}</h3>
+                        <p><strong>Rating:</strong> <span class="rating">{{ course.get('Course Rating', 'N/A') }}</span></p>
+                        <p>{{ course.get('Course Description', 'No description available.') }}</p>
+                        <a href="{{ course.get('Course URL', '#') }}" target="_blank">View Course</a>
+
+                        <!-- Form to add to dashboard -->
+                        <form action="{{ url_for('add_to_dashboard') }}" method="POST">
+                            <input type="hidden" name="course_name" value="{{ course.get('Course Name', '') }}">
+                            <input type="hidden" name="course_rating" value="{{ course.get('Course Rating', '') }}">
+                            <input type="hidden" name="course_url" value="{{ course.get('Course URL', '') }}">
+                            <button type="submit">Add to Dashboard</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No courses found based on your criteria. Please try adjusting your preferences.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
