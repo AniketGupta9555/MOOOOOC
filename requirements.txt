@@ -3,3 +3,5 @@ pandas
 numpy
 scikit-learn
 openpyxl
+gunicorn
+odfpy  # for reading .ods files
