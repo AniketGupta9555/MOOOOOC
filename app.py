@@ -22,8 +22,8 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key')
 
 
 # File paths for datasets
-COURSES_FILE_PATH = r'datasets\MOOC.ods'
-USER_DATA_FILE_PATH = r'datasets\mooc_user_data.ods'
+COURSES_FILE_PATH = 'datasets/MOOC.ods'
+USER_DATA_FILE_PATH = 'datasets/mooc_user_data.ods'
 
 # Initialize the global variable for courses_df and user_data_df
 courses_df = pd.DataFrame()
