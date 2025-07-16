@@ -17,7 +17,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
-app.secret_key = 'a_very_secret_key'  # Replace with a secure key
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key')
+
+
 
 # File paths for datasets
 COURSES_FILE_PATH = r'datasets\MOOC.ods'
